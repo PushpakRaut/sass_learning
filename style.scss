@@ -1,0 +1,67 @@
+@import "./variable";
+@import "./reset";
+
+@function weight($weigth_name){
+    @return map-get($font-weigths, $weigth_name)
+};
+
+@mixin flexcenter($direction) {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: $direction;
+};
+
+@mixin theme($ligth-theme: true){
+    @if $ligth-theme {
+        background: lighten($color: $primary-color, $amount: 100%);
+        color: darken($color: $text-color, $amount: 100%);
+    }
+};
+
+@mixin mobile{
+    @media (max-width: $mobile){
+        @content;
+    }
+}
+
+body{
+    background-color: $primary-color;
+    color: $text-color;
+}
+
+.main{
+    @include flexcenter(row);
+    width: 80%;
+    margin: 10px auto;
+
+    p{
+        // font-weight: map-get($map: $font-weigths, $key: bold);
+      
+        margin: 10px;
+    }
+    //in the .css file before using the interpolation it is like .main__para its not using the .main class before the .main__para
+    // #{&} this is interpolation used to add all classes before the the class we are applying scss so for example: .main .main__para 
+    #{&}__para1{
+        // font-size: 12px;
+        font-weight: weight(bold);
+        &:hover{
+            color: pink;
+        }
+    }
+
+    #{&}__para2{
+        @extend .main__para1; 
+        &:hover{
+            color: $accent-color;
+        }
+    }
+
+
+    @include mobile{
+        flex-direction: column;
+    }
+}
+.light{
+    @include theme($ligth-theme: false);
+}
